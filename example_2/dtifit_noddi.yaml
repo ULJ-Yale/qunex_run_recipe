@@ -1,0 +1,33 @@
+global_parameters:
+  studyfolder   : "/data/studies/run_recipe_demo"
+  sessionsfolder: "/data/studies/run_recipe_demo/sessions"
+  batchfile.    : "/data/studies/run_recipe_demo/processing/batch.txt"
+  sessions      : "100307,111716"
+  overwrite     : "yes"
+
+recipes:
+  dtifit_noddi:
+    commands:
+      - create_study
+
+      - external:
+          path: "/data/qunex_run_recipe/example_2/aws_hcya.sh"
+          sessions: "100307,111716"
+          source_folder: "T1w"
+          target_folder: "/data/raw/hcya"
+          access_key: "<HCP S3 ACCESS KEY>"
+          secret_key: "<HCP S3 SECRET KEY>"
+
+      - import_hcp:
+          inbox: "NONE"
+          processed_data: "/data/raw/hcya"
+          hcp_dataset: "HCYA"
+
+      - create_batch:
+          targetfile: "/data/qx_specs/batch.txt"
+          overwrite: "append"
+
+      - dwi_dtifit
+
+      - dwi_noddi_gpu:
+          cuda_version: "12"
