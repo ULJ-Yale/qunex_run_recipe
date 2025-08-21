@@ -1,0 +1,17 @@
+#  HCP mapping file : columbia
+#  ----------------
+
+STRUC_T1MPRAGE_noPROMO          => T1w
+STRUC_T2CUBE_noPROMO            => T2w
+FM_TOPUP_RPE_AP                 => SE-FM-AP
+FM_TOPUP_FPE_PA                 => SE-FM-PA
+FUNC_TASK_1_MUX8_AP_TE34        => bold:motor:phenc(AP)
+FUNC_TASK_2_MUX8_AP_TE34        => bold:sWM:phenc(AP)
+FUNC_REST_MUX8_AP_TE34          => bold:rest:phenc(AP)
+FUNC_CHECKERBOARD_MUX8_AP_TE34  => bold:checkerboard:phenc(PA)
+ASL_LOC_AX                      => ASL:ref
+ASL_3DPCASL_AX_S36              => ASL
+DTI_MUX3_D98_AP_ABCD            => DWI:dir98_AP
+DTI_MUX3_D98_PA_ABCD            => DWI:dir98_PA
+DTI_MUX3_D99_AP_ABCD            => DWI:dir99_AP
+DTI_MUX3_D99_PA_ABCD            => DWI:dir99_PA

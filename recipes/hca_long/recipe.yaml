@@ -1,0 +1,39 @@
+global_parameters:
+    studyfolder     : "{{$STUDY_FOLDER}}"
+    sessionsfolder  : "{{$STUDY_FOLDER}}/sessions"
+    overwrite       : "yes"
+    sessions        : "HCA6002236_V1_MR,HCA6002236_V2_MR"
+    batchfile       : "{{$STUDY_FOLDER}}/processing/batch.txt"
+    hcp_filename    : "userdefined"
+    parsessions     : "2"
+
+recipes:
+    at:
+        commands:
+            - create_study
+            - import_hcp:
+                inbox   : "{{$QX_RAWDATA_FOLDER}}"
+                archive : "leave"
+            - create_batch:
+                targetfile  : "{{$STUDY_FOLDER}}/processing/batch.txt"
+                paramfile   : "{{$QX_RECIPE_FOLDER}}/recipes/hca_long/parameters.txt"
+            - setup_hcp
+            - hcp_pre_freesurfer
+            - hcp_freesurfer
+            - hcp_post_freesurfer
+            - hcp_fmri_volume
+            - hcp_fmri_surface
+            - hcp_icafix
+            - hcp_msmall
+            - hcp_diffusion
+            - hcp_long_freesurfer
+            - hcp_long_post_freesurfer
+            - hcp_fmri_volume:
+                longitudinal: "yes"
+            - hcp_fmri_surface:
+                longitudinal: "yes"
+            - hcp_diffusion:
+                longitudinal: "yes"
+            - hcp_reapply_fix:
+                longitudinal: "yes"
+            - hcp_long_msmall

@@ -1,0 +1,67 @@
+global_parameters:
+    studyfolder     : "{{$STUDY_FOLDER}}"
+    sessionsfolder  : "{{$STUDY_FOLDER}}/sessions"
+    overwrite       : "yes"
+    sessions        : "100206_3T"
+    batchfile       : "{{$STUDY_FOLDER}}/processing/batch.txt"
+    hcp_filename    : "userdefined"
+
+recipes:
+    at:
+        commands:
+            - create_study
+            - import_hcp:
+                nameformat : "(?P<subject_id>[^/]+?)/unprocessed/(?P<session_name>.*?)/(?P<data>.*)"
+                inbox      : "{{$QX_RAWDATA_FOLDER}}"
+                archive    : "leave"
+            - setup_hcp
+            - create_batch:
+                targetfile  : "{{$STUDY_FOLDER}}/processing/batch.txt"
+                paramfile   : "{{$QX_RECIPE_FOLDER}}/recipes/hcya/parameters.txt"
+            - hcp_pre_freesurfer
+            - hcp_freesurfer
+            - hcp_post_freesurfer
+            - hcp_fmri_volume
+            - hcp_fmri_surface
+            - hcp_icafix
+            - hcp_msmall
+            - run_qc:
+                outpath     : "{{$STUDY_FOLDER}}/sessions/QC"
+                modality    : "T1w"
+            - run_qc:
+                outpath     : "{{$STUDY_FOLDER}}/sessions/QC"
+                modality    : "T2w"
+            - run_qc:
+                outpath     : "{{$STUDY_FOLDER}}/sessions/QC"
+                modality    : "myelin"
+            - run_qc:
+                outpath     : "{{$STUDY_FOLDER}}/sessions/QC"
+                modality    : "BOLD"
+                boldsuffix  : "Atlas"
+            - map_hcp_data
+            - create_bold_brain_masks
+            - compute_bold_stats
+            - create_stats_report
+            - extract_nuisance_signal
+            - preprocess_bold
+            - compute_bold_fc:
+                calculation : "seed"
+                runtype     : "individual"
+                inputfiles  : "bold1_Atlas_s_hpss_res-mVWMWB_lpss.dtseries.nii"
+                inputpath   : "/images/functional"
+                outname     : "seed_bold1_Atlas_s_hpss_res-VWMWB_lpss"
+                ignore      : "udvarsme"
+                roinfo      : "/opt/qunex/qx_library/data/roi/seeds_cifti.names"
+                targetf     : "/images/functional"
+                covariance  : "true"
+            - compute_bold_fc:
+                calculation : "gbc"
+                runtype     : "individual"
+                inputfiles  : "bold1_Atlas_s_hpss_res-mVWMWB_lpss.dtseries.nii"
+                inputpath   : "/images/functional"
+                outname     : "GBC_bold1_Atlas_s_hpss_res-VWMWB_lpss"
+                ignore      : "udvarsme"
+                targetf     : "/images/functional"
+                time        : "true"
+                vstep       : "1000"
+                covariance  : "true"
