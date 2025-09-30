@@ -1,0 +1,59 @@
+datatypes:
+  raw_data:
+    - scan:
+        series_description: T1w_MPR NORM
+        json:
+            normalized: True
+            EchoTime: 0.00222
+            RepetitionTime: 2.4
+            DwellTime: "7.1e-06"
+        nifti:
+            data_shape: [208,300,320]
+        
+    - scan:
+        series_description: T2w_SPC FIL
+        json:
+            normalized: True
+            EchoTime: 0.564
+            RepetitionTime: 3.2
+            DwellTime: "2.1e-06"
+        nifti:
+            data_shape: [208,300,320]
+        
+    - scan:
+        series_description: SpinEchoFieldMap_AP MOSAIC
+        nifti:
+            data_shape: [104,90,72]
+        json:
+            VendorReportedEchoSpacing: 0.00058
+        
+    - scan:
+        series_description: SpinEchoFieldMap_PA MOSAIC
+        nifti:
+            data_shape: [104,90,72]
+        json:
+            VendorReportedEchoSpacing: 0.00058
+
+    - scan:
+        series_description: rfMRI_REST_AP MOSAIC
+        session:
+            image_count: 1
+        nifti:
+            data_shape: [104,104,72,770]
+        json:
+            PhaseEncodingDirection: j-
+            EchoTime: 0.037
+            RepetitionTime: 0.8
+            EffectiveEchoSpacing: 0.000580009
+        
+    - scan:
+        series_description: rfMRI_REST_AP_SBRef MOSAIC
+        session:
+            image_count: 1
+        nifti:
+            data_shape: [104,104,72]
+        json:
+            PhaseEncodingDirection: [j-]
+            EchoTime: 0.037
+            RepetitionTime: 0.8
+            EffectiveEchoSpacing: 0.000580009

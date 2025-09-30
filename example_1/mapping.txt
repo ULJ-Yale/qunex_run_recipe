@@ -1,0 +1,10 @@
+#  HCP mapping file
+#  ----------------
+
+T1w_MPR NORM                 => T1w
+T2w_SPC NORM                  => T2w
+SpinEchoFieldMap_AP MOSAIC   => SE-FM-AP
+SpinEchoFieldMap_PA MOSAIC   => SE-FM-PA
+rfMRI_REST_AP_SBRef MOSAIC => boldref:rest:phenc(AP)
+rfMRI_REST_AP MOSAIC => bold:rest:phenc(AP)
+
