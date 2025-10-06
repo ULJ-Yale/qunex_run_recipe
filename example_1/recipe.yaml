@@ -1,104 +1,98 @@
 global_parameters:
-    sessionsfolder    : "{{$STUDY_FOLDER}}/sessions"
-    sessions          : "pb12280"
-    overwrite         : "no"
+    studyfolder: /data/studies/run_recipe_1
+    sessionsfolder: /data/studies/run_recipe_1/sessions
+    sessions: pb12280
+    batchfile: /data/studies/run_recipe_1/processing/batch.txt
 
 recipes:
-    Initial_Setup:
+    initial_setup:
         commands:
-            - create_study:
-                studyfolder: "{{$STUDY_FOLDER}}"
+            - create_study
 
-    Import_Validate:
+    import_validate:
         commands:
             - import_dicom:
                 add_image_type: 1
             - run_qc:
-                modality: "rawNII"
-                outpath: "{{$STUDY_FOLDER}}/sessions/QC/rawNII"
-                scenetemplatefolder: "/opt/qunex/qx_library/data/scenes/qc" 
-                customqc: "no"
-                omitdefaults: "no"
-                scenezip: "yes"
+                modality: rawNII
+                outpath: /data/studies/run_recipe_1/sessions/QC/rawNII
+                customqc: no
+                omitdefaults: no
+                scenezip: yes
             - run_qa:
-                datatype: "raw_data"
-                configfile: "{{$STUDY_FOLDER}}/sessions/specs/qa.yaml"
-                overwrite: "yes"
+                datatype: raw_data
+                configfile: /data/qunex_run_recipe/example_1/qa.yaml
+                overwrite: yes
 
-    HCP_Mapping: 
+    hcp_mapping:
         commands:
             - create_session_info:
-                mapping: "{{$STUDY_FOLDER}}/sessions/specs/mapping.txt"
-            - create_batch: 
-                overwrite: "append"
-                paramfile: "{{$STUDY_FOLDER}}/sessions/specs/parameters.txt"
+                mapping: /data/qunex_run_recipe/example_1/hcp_mapping.txt
+            - create_batch:
+                overwrite: append
+                paramfile: /data/qunex_run_recipe/example_1/parameters.txt
 
-    HCP_Structural:
+    hcp_structural:
         parameters:
-            batchfile: "{{$STUDY_FOLDER}}/processing/batch.txt"
-            scenetemplatefolder: "/opt/qunex/qx_library/data/scenes/qc"
-            customqc: "no"
-            omitdefaults: "no"
-            scenezip: "yes"
+            customqc: no
+            omitdefaults: no
+            scenezip: yes
         commands:
             - setup_hcp
             - hcp_pre_freesurfer
             - hcp_freesurfer
             - hcp_post_freesurfer
             - run_qc:
-                modality: "T1w"
-                outpath: "{{$STUDY_FOLDER}}/sessions/QC/T1w"      
+                modality: T1w
+                outpath: /data/studies/run_recipe_1/sessions/QC/T1w
             - run_qc:
-                modality: "T2w"
-                outpath: "{{$STUDY_FOLDER}}/sessions/QC/T2w"
+                modality: T2w
+                outpath: /data/studies/run_recipe_1/sessions/QC/T2w
             - run_qc:
-                modality: "myelin"
-                outpath: "{{$STUDY_FOLDER}}/sessions/QC/myelin"
+                modality: myelin
+                outpath: /data/studies/run_recipe_1/sessions/QC/myelin
 
-    HCP_Functional:
+    hcp_functional:
         parameters:
-            batchfile: "{{$STUDY_FOLDER}}/processing/batch.txt"
-            bolds             : "1"
-            boldsuffix        : "Atlas"
-            parelements       : 1
+            bolds: 1
+            boldsuffix: Atlas
+            parelements: 1
         commands:
             - hcp_fmri_volume
             - hcp_fmri_surface
             - run_qc:
-                modality: "BOLD"
-                outpath     : "{{$STUDY_FOLDER}}/sessions/QC/BOLD" 
-                scenetemplatefolder : "/opt/qunex/qx_library/data/scenes/qc"
-                customqc            : "no"
-                omitdefaults        : "no"
-                scenezip            : "yes"
+                modality: BOLD
+                outpath: /data/studies/run_recipe_1/sessions/QC/BOLD
+                scenetemplatefolder: /opt/qunex/qx_library/data/scenes/qc
+                customqc: no
+                omitdefaults: no
+                scenezip: yes
 
-    Postprocessing:
+    post_processing:
         parameters:
-            batchfile: "{{$STUDY_FOLDER}}/processing/batch.txt"
-            image_target: "dtseries"
-            bolds             : "1"
-            boldsuffix        : "Atlas"
-            parelements       : 1
+            image_target: dtseries
+            bolds: 1
+            boldsuffix: Atlas
+            parelements: 1
         commands:
             - map_hcp_data:
-                hcp_cifti_tail: "_Atlas"
+                hcp_cifti_tail: _Atlas
             - create_bold_brain_masks
             - compute_bold_stats
             - create_stats_report
             - extract_nuisance_signal
             - preprocess_bold
 
-    Calculate_GBC:
+    calculate_gbc:
         commands:
             - create_list:
-                bolds: "1"
-                listfile: "{{$STUDY_FOLDER}}/sessions/specs/fc_bolds.list"
-                bold_tail: "_Atlas_s_hpss_res-mVWMWB1d_lpss.dtseries.nii"
-                overwrite: "yes"
-                check: "present"
-
+                bolds: 1
+                listfile: /data/studies/run_recipe_1/sessions/specs/fc_bolds.list
+                bold_tail: _Atlas_s_hpss_res-mVWMWB1d_lpss.dtseries.nii
+                overwrite: yes
+                check: present
             - fc_compute_gbc:
-                flist: "{{$STUDY_FOLDER}}/sessions/specs/fc_bolds.list"
-                command: "mFz:0"
-                targetf: "{{$STUDY_FOLDER}}/analysis/gbc"
-                options: "ignore=udvarsme|saveind=all|itargetf=sfolder|verbose=true"
+                flist: /data/studies/run_recipe_1/sessions/specs/fc_bolds.list
+                command: mFz:0
+                targetf: /data/studies/run_recipe_1/analysis/gbc
+                options: ignore=udvarsme|saveind=all|itargetf=sfolder|verbose=true
