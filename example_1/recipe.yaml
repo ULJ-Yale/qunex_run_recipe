@@ -59,7 +59,6 @@ recipes:
             - run_qc:
                 modality: BOLD
                 outpath: /data/studies/run_recipe_1/sessions/QC/BOLD
-                scenetemplatefolder: /opt/qunex/qx_library/data/scenes/qc
                 customqc: no
                 omitdefaults: no
                 scenezip: yes
