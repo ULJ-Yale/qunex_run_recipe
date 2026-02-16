@@ -67,7 +67,6 @@ recipes:
     post_processing:
         parameters:
             image_target: dtseries
-            boldsuffix: Atlas
         commands:
             - map_hcp_data:
                 hcp_cifti_tail: _Atlas
