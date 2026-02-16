@@ -53,10 +53,6 @@ recipes:
                 outpath: /data/studies/run_recipe_1/sessions/QC/myelin
 
     hcp_functional:
-        parameters:
-            bolds: 1
-            boldsuffix: Atlas
-            parelements: 1
         commands:
             - hcp_fmri_volume
             - hcp_fmri_surface
@@ -67,13 +63,12 @@ recipes:
                 customqc: no
                 omitdefaults: no
                 scenezip: yes
+                boldsuffix: Atlas
 
     post_processing:
         parameters:
             image_target: dtseries
-            bolds: 1
             boldsuffix: Atlas
-            parelements: 1
         commands:
             - map_hcp_data:
                 hcp_cifti_tail: _Atlas
@@ -86,7 +81,6 @@ recipes:
     calculate_gbc:
         commands:
             - create_list:
-                bolds: 1
                 listfile: /data/studies/run_recipe_1/sessions/specs/fc_bolds.list
                 bold_tail: _Atlas_s_hpss_res-mVWMWB1d_lpss.dtseries.nii
                 overwrite: yes
