@@ -81,7 +81,6 @@ recipes:
             - create_list:
                 listfile: /data/studies/run_recipe_1/sessions/specs/fc_bolds.list
                 bold_tail: _Atlas_s_hpss_res-mVWMWB1d_lpss.dtseries.nii
-                overwrite: yes
                 check: present
             - fc_compute_gbc:
                 flist: /data/studies/run_recipe_1/sessions/specs/fc_bolds.list
